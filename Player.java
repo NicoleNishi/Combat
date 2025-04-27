@@ -11,6 +11,9 @@ public class Player implements ISolid {
 	private Color color;
 	private String id;
 	private BufferedImage img;
+	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
+	private long lastShotTime = 0; // last shot time
+	private long shotCooldown = 300; // period between shots (in ms)
 
 	/**
 		Construtor da classe Player.
@@ -51,7 +54,7 @@ public class Player implements ISolid {
 
 		GameLib.drawImage(img, cx, cy, direction, width / img.getWidth());
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 		Método chamado quando se deseja mover para a frente na direção atual. 
 		Este método é chamado sempre que a tecla associada à ação 
@@ -60,6 +63,8 @@ public class Player implements ISolid {
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
 	public void moveForwards(long delta){ // Fiz a modificacao 27/04
+		if(isDead()) return; // Do not move when player is dead
+
 		double distance = speed * delta / 1000.0;
 		cx += Math.cos(direction) * distance;
 		cx += Math.sin(direction) * distance;
@@ -73,6 +78,8 @@ public class Player implements ISolid {
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
 	public void moveBackwards(long delta){ // Fiz a modificacao 27/04
+		if(isDead()) return; // Do not move when player is dead
+
 		double distance = speed * delta / 1000.0;
 		cx -= Math.cos(direction) * distance;
 		cy -= Math.sin(direction) * distance;
@@ -86,6 +93,8 @@ public class Player implements ISolid {
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
 	public void rotateLeft(long delta) { // Fiz a modificacao 27/04
+		if(isDead()) return; // Do not move when player is dead
+
 		double rotationSpeed = 2.0; // Talvez usar a mesma velocidade de andar?
 		double rotation = rotationSpeed * delta / 1000.0;
 		direction += rotation;
@@ -99,17 +108,24 @@ public class Player implements ISolid {
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
 	public void rotateRight(long delta) { // Fiz a modificacao 27/04
-		double rotationSpeed = 2.0; // Talvez usar a mesma velocidade de andar?
+		if(isDead()) return; // Do not move when player is dead
+
+		double rotationSpeed = 2.0; // Maybe can we use the same speed as move?
 		double rotation = rotationSpeed * delta / 1000.0;
 		direction -= rotation; 
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o jogador pode realizar um disparo ou não. Chamado sempre que a ação de disparar
 	 * desse player for acionada.
 	 */
-	public boolean canFire() {
-		return false;
+	public boolean canFire() { // Fiz a modificacao 27/04
+		if(isDead()) return false; // Do not move when player is dead
+
+		long now = System.currentTimeMillis();
+
+		if(now - lastShotTime >= shotCooldown) return true;
+		else return false;
 	}
 
 	/**
@@ -117,73 +133,83 @@ public class Player implements ISolid {
 	 * Esse método cria o disparo e o adiciona ao jogo.
 	 */
 	public void fire() {
-	}
+		if(isDead()) return; // Do not move when player is dead
 
+		if(canFire()) {
+			lastShotTime = System.currentTimeMillis();
+
+			Shot shot = new Shot(0.5);
+		}
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
 	 * poderá ser danificado novamente.
 	 */
-	public boolean isDead() {
-		return false;
+	public boolean isDead() { // Fiz a modificacao 27/04
+		return dead;
 	}
 
 	/**
 	 * Chamado sempre que o player for destruído com um disparo. 
 	 */
-	public void die() {
+	public void die() { // Fiz a modificacao 27/04
+		dead = true;
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 		Método que devolve a string de identificação do player.
 		@return a String de identificação.
 	*/
-	public String getId() { 
-		return null; 
+	public String getId() {  // Fiz a modificacao 27/04
+		return id; 
 	}
 
 	/**
 	 * Teleporta o player para essa coordenada do mapa.
 	 */
-	public void setPosition(double cx, double cy) {
+	public void setPosition(double cx, double cy) { // Fiz a modificacao 27/04
+		this.cx = cx;
+		this.cy = cy;
 	}
 
 	/**
 		Método que devolve a largura do retângulo que representa o player.
 		@return um double com o valor da largura.
 	*/
-	public double getWidth() { 
-		return 0; 
+	public double getWidth() { // Fiz a modificacao 27/04
+		return width; 
 	}
 
 	/**
 		Método que devolve a altura do retângulo que representa o player.
 		@return um double com o valor da altura.
 	*/
-	public double getHeight() { 
-		return 0;
+	public double getHeight() { // Fiz a modificacao 27/04
+		return height;
 	}
 
 	/**
 		Método que devolve a coordenada x do centro do retângulo que representa o player.
 		@return o valor double da coordenada x.
 	*/
-	public double getCx() { 
-		return 0;
+	public double getCx() { // Fiz a modificacao 27/04
+		return cx;
 	}
 
 	/**
 		Método que devolve a coordenada y do centro do retângulo que representa o player.
 		@return o valor double da coordenada y.
 	*/
-	public double getCy() { 
-		return 0;
+	public double getCy() { // Fiz a modificacao 27/04
+		return cy;
 	}
 
 	/**
 	 * Obtém a cor do player.
 	 */
-	public Color getColor() {
-		return null;
+	public Color getColor() { // Fiz a modificacao 27/04
+		return color;
 	}
 }
 
