@@ -65,9 +65,9 @@ public class Player implements ISolid {
 	public void moveForwards(long delta){ // Fiz a modificacao 27/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double distance = speed * delta / 1000.0;
-		cx += Math.cos(direction) * distance;
-		cx += Math.sin(direction) * distance;
+		double distance = 50.0 * delta / 1000.0;
+		cx += Math.cos(direction * Math.PI) * distance;
+		cy += Math.sin(direction * Math.PI) * distance;
 	}
 
 	/**
@@ -80,9 +80,9 @@ public class Player implements ISolid {
 	public void moveBackwards(long delta){ // Fiz a modificacao 27/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double distance = speed * delta / 1000.0;
-		cx -= Math.cos(direction) * distance;
-		cy -= Math.sin(direction) * distance;
+		double distance = 50.0 * delta / 1000.0;
+		cx -= Math.cos(direction * Math.PI) * distance;
+		cy -= Math.sin(direction * Math.PI) * distance;
 	}
 
 	/**
@@ -92,12 +92,12 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
-	public void rotateLeft(long delta) { // Fiz a modificacao 27/04
+	public void rotateLeft(long delta) { // Fiz a modificacao 29/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double rotationSpeed = 2.0; // Talvez usar a mesma velocidade de andar?
+		double rotationSpeed = 50.0; // Talvez usar a mesma velocidade de andar?
 		double rotation = rotationSpeed * delta / 1000.0;
-		direction += rotation;
+		direction -= rotation;
 	}
 
 	/**
@@ -107,12 +107,12 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
-	public void rotateRight(long delta) { // Fiz a modificacao 27/04
+	public void rotateRight(long delta) { // Fiz a modificacao 29/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double rotationSpeed = 2.0; // Maybe can we use the same speed as move?
+		double rotationSpeed = 50.0; // Maybe can we use the same speed as move?
 		double rotation = rotationSpeed * delta / 1000.0;
-		direction -= rotation; 
+		direction += rotation; 
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
@@ -120,7 +120,7 @@ public class Player implements ISolid {
 	 * desse player for acionada.
 	 */
 	public boolean canFire() { // Fiz a modificacao 27/04
-		if(isDead()) return false; // Do not move when player is dead
+		// if(isDead()) return false; // Do not move when player is dead
 
 		long now = System.currentTimeMillis();
 
@@ -133,12 +133,19 @@ public class Player implements ISolid {
 	 * Esse método cria o disparo e o adiciona ao jogo.
 	 */
 	public void fire() {
-		if(isDead()) return; // Do not move when player is dead
+		// if(isDead()) return; // Do not move when player is dead
 
 		if(canFire()) {
 			lastShotTime = System.currentTimeMillis();
-
-			Shot shot = new Shot(0.5);
+/*
+			Shot shot = new Shot(
+				id,
+				cx, cy,
+				1.0,
+				direction,
+				0.7
+			);
+			 */
 		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
