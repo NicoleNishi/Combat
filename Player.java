@@ -65,10 +65,12 @@ public class Player implements ISolid {
 	public void moveForwards(long delta){ // Fiz a modificacao 27/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double distance = 50.0 * delta / 1000.0;
-		cx += Math.cos(direction * Math.PI) * distance;
-		cy += Math.sin(direction * Math.PI) * distance;
-	}
+		double distance = speed * delta;
+		double radians = Math.toRadians(direction);
+
+		cx += Math.cos(radians) * distance;
+		cy += Math.sin(radians) * distance;
+	} // ok
 
 	/**
 		Método chamado quando se deseja mover o player para trás na direção atual. 
@@ -80,10 +82,12 @@ public class Player implements ISolid {
 	public void moveBackwards(long delta){ // Fiz a modificacao 27/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double distance = 50.0 * delta / 1000.0;
-		cx -= Math.cos(direction * Math.PI) * distance;
-		cy -= Math.sin(direction * Math.PI) * distance;
-	}
+		double distance = speed * delta;
+		double radians = Math.toRadians(direction);
+
+		cx -= Math.cos(radians) * distance;
+		cy -= Math.sin(radians) * distance;
+	} // ok
 
 	/**
 		Método chamado quando se deseja girar o player para a esquerda (sentido anti-horário). 
@@ -95,10 +99,9 @@ public class Player implements ISolid {
 	public void rotateLeft(long delta) { // Fiz a modificacao 29/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double rotationSpeed = 50.0; // Talvez usar a mesma velocidade de andar?
-		double rotation = rotationSpeed * delta / 1000.0;
+		double rotation = speed * delta;
 		direction -= rotation;
-	}
+	} // OK
 
 	/**
 		Método chamado quando se deseja girar o player para a direita (sentido horário). 
@@ -110,10 +113,9 @@ public class Player implements ISolid {
 	public void rotateRight(long delta) { // Fiz a modificacao 29/04
 		if(isDead()) return; // Do not move when player is dead
 
-		double rotationSpeed = 50.0; // Maybe can we use the same speed as move?
-		double rotation = rotationSpeed * delta / 1000.0;
+		double rotation = speed * delta;
 		direction += rotation; 
-	}
+	} // Ok
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o jogador pode realizar um disparo ou não. Chamado sempre que a ação de disparar
@@ -126,7 +128,7 @@ public class Player implements ISolid {
 
 		if(now - lastShotTime >= shotCooldown) return true;
 		else return false;
-	}
+	} // Preciso do metodo shot para testar
 
 	/**
 	 * Cria um disparo vindo desse player na mesma direção apontada pelo player.
@@ -137,17 +139,10 @@ public class Player implements ISolid {
 
 		if(canFire()) {
 			lastShotTime = System.currentTimeMillis();
-/*
-			Shot shot = new Shot(
-				id,
-				cx, cy,
-				1.0,
-				direction,
-				0.7
-			);
-			 */
+
+			new Shot(this, cx, cy, 1.0, direction, speed);
 		}
-	}
+	} // Preciso do metodo shot para testar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
@@ -155,14 +150,14 @@ public class Player implements ISolid {
 	 */
 	public boolean isDead() { // Fiz a modificacao 27/04
 		return dead;
-	}
+	} // Preciso do metodo shot para testar
 
 	/**
 	 * Chamado sempre que o player for destruído com um disparo. 
 	 */
 	public void die() { // Fiz a modificacao 27/04
 		dead = true;
-	}
+	} // Preciso do metodo shot para testar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 		Método que devolve a string de identificação do player.

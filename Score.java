@@ -35,6 +35,7 @@ public class Score {
 		Método que incrementa em 1 unidade a contagem de pontos.
 	*/
 	public void inc(){
+			counter += 1;
 	}
 
 	/**
@@ -43,13 +44,13 @@ public class Score {
 		@return o valor inteiro referente ao total de pontos.
 	*/
 	public int getScore(){
-		return 0;
+		return counter;
 	}
 
 	/**
 	 * Obtém o ID do player associado a este placar.
 	 */
 	public String getPlayerId() {
-		return null;
+		return playerId;
 	}
 }
