@@ -28,30 +28,30 @@ public class Wall implements ISolid {
 	/** Obtém a largura do retângulo que representa a parede. */
 	public double getWidth() { 
 
-		return 0; 
+		return width; 
 	}
 
 	/** Obtém a altura do retângulo que representa a parede. */
 	public double getHeight() { 
 
-		return 0;
+		return height;
 	}
 
 	/** Obtém a coordenada x do centro do retângulo da parede. */
 	public double getCx() { 
 		
-		return 0;
+		return cx;
 	}
 
 	/** Obtém a coordenada y do centro do retângulo da parede. */
 	public double getCy() { 
 	
-		return 0;
+		return cy;
 	}
 
 	/** Obtém o nome identificador dessa parede. */
 	public String getId(){
-		return null;
+		return id;
 	}
 }
 
