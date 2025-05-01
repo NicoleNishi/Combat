@@ -84,7 +84,7 @@ public class Shot implements ISolid {
 	 * elementos do jogo.
 	 */
 	public boolean isActive() {
-		return false;
+		return true;
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Shot implements ISolid {
 		@return o valor double da coordenada x.
 	*/
 	public double getCx(){
-		return 0;
+		return cx;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Shot implements ISolid {
 		@return o valor double da coordenada y.
 	*/
 	public double getCy(){
-		return 0;
+		return cy;
 	}
 
 	/**
@@ -109,17 +109,17 @@ public class Shot implements ISolid {
 
 	*/
 	public double getSpeed(){
-		return 0;
+		return speed;
 	}
 
 	/** Obtém a largura do retângulo que representa o disparo. */
 	public double getWidth() {
-		return 0;
+		return size;
 	}
 
 	/** Obtém a altura do retângulo que representa o disparo. */
 	public double getHeight() {
-		return 0;
+		return size;
 	}
 
 	/**
@@ -127,6 +127,6 @@ public class Shot implements ISolid {
 	 * @return o player que efetuou o disparo
 	 */
 	public Player getOwner() {
-		return null;
+		return owner;
 	}
 }
