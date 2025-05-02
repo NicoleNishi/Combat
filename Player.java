@@ -12,8 +12,6 @@ public class Player implements ISolid {
 	private String id;
 	private BufferedImage img;
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
-	private long lastShotTime = 0; // last shot time
-	private long shotCooldown = 300; // period between shots (in ms)
 
 	/**
 		Construtor da classe Player.
@@ -124,10 +122,11 @@ public class Player implements ISolid {
 	public boolean canFire() { // Fiz a modificacao 27/04
 		if(isDead()) return false; // Do not fire when player is dead
 
-		long now = System.currentTimeMillis();
+		Shot s;
+		if(s.getOwner() == this && s.isActive()) return false;
 
-		if(now - lastShotTime >= shotCooldown) return true;
-		else return false;
+		return true;
+		
 	} // Preciso do metodo shot para testar
 
 	/**
@@ -138,11 +137,9 @@ public class Player implements ISolid {
 		if(isDead()) return; // Do not fire when player is dead
 
 		if(canFire()) {
-			lastShotTime = System.currentTimeMillis();
-
 			double directionRadians = Math.toRadians(direction);
-
-			new Shot(this, cx, cy, 1.0, directionRadians, speed);
+			Shot shot = new Shot(this, cx, cy, 1.0, directionRadians, speed);
+			Combat.addShot(shot);
 		}
 	} // Preciso do metodo shot para testar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -167,7 +164,7 @@ public class Player implements ISolid {
 	*/
 	public String getId() {  // Fiz a modificacao 27/04
 		return id; 
-	}
+	} // OK
 
 	/**
 	 * Teleporta o player para essa coordenada do mapa.
@@ -175,7 +172,7 @@ public class Player implements ISolid {
 	public void setPosition(double cx, double cy) { // Fiz a modificacao 27/04
 		this.cx = cx;
 		this.cy = cy;
-	}
+	} // Ok
 
 	/**
 		Método que devolve a largura do retângulo que representa o player.
@@ -183,7 +180,7 @@ public class Player implements ISolid {
 	*/
 	public double getWidth() { // Fiz a modificacao 27/04
 		return width; 
-	}
+	} // Ok
 
 	/**
 		Método que devolve a altura do retângulo que representa o player.
@@ -191,7 +188,7 @@ public class Player implements ISolid {
 	*/
 	public double getHeight() { // Fiz a modificacao 27/04
 		return height;
-	}
+	} // Ok
 
 	/**
 		Método que devolve a coordenada x do centro do retângulo que representa o player.
@@ -199,7 +196,7 @@ public class Player implements ISolid {
 	*/
 	public double getCx() { // Fiz a modificacao 27/04
 		return cx;
-	}
+	} // Ok
 
 	/**
 		Método que devolve a coordenada y do centro do retângulo que representa o player.
@@ -207,13 +204,13 @@ public class Player implements ISolid {
 	*/
 	public double getCy() { // Fiz a modificacao 27/04
 		return cy;
-	}
+	} // Ok
 
 	/**
 	 * Obtém a cor do player.
 	 */
 	public Color getColor() { // Fiz a modificacao 27/04
 		return color;
-	}
+	} // Ok
 }
 
