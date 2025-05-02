@@ -83,7 +83,10 @@ public class Shot implements ISolid {
 		@return um valor booleano que indica a ocorrência (true) ou não (false) de colisão.
 	*/	
 	public boolean checkCollision(Player player){
-		return (player.getCx() - player.getWidth()/2 < cx && player.getCx() + player.getWidth()/2 > cx && player.getCy() - player.getHeight()/2 < cy && player.getCy() + player.getHeight()/2 > cy);
+		if (player != owner) {
+			return (player.getCx() - player.getWidth()/2 < cx && player.getCx() + player.getWidth()/2 > cx && player.getCy() - player.getHeight()/2 < cy && player.getCy() + player.getHeight()/2 > cy);
+		}
+		return false;
 	}
 
 	/**
