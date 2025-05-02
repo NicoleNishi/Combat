@@ -12,9 +12,10 @@ public class Player implements ISolid {
 	private String id;
 	private BufferedImage img;
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
-	private boolean hasFired = false;
-
-	/**
+	private Shot currentShot;
+	private long lastBreath = 0;
+	private long died = 1000;
+	/*
 		Construtor da classe Player.
 
 		@param cx coordenada x da posição inicial do player (centro do retângulo que o representa).
@@ -121,9 +122,9 @@ public class Player implements ISolid {
 	 * desse player for acionada.
 	 */
 	public boolean canFire() { // Fiz a modificacao 27/04
-		if(isDead() || hasFired == true) return false;
+		if(isDead()) return false;
 
-		return true;
+		return (currentShot == null || !currentShot.isActive());
 	} 
 
 	/**
@@ -133,29 +134,30 @@ public class Player implements ISolid {
 	public void fire() {
 		if(isDead()) return; // Do not fire when player is dead
 
-		Shot shot = new Shot(this, cx, cy, 1.0, direction, speed);
-		Combat.addShot(shot);
-		hasFired = true;
+		currentShot = new Shot(this, cx, cy, 1.0, direction, speed);
+		Combat.addShot(currentShot);
 	} 
-
-	public void update() {
-		this.hasFired = false;
-	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
 	 * poderá ser danificado novamente.
 	 */
 	public boolean isDead() { // Fiz a modificacao 27/04
+		long now = System.currentTimeMillis();
+		if(now - lastBreath >= died) {
+			dead = false;
+			return false;
+		}
 		return dead;
-	} // Preciso do metodo shot para testar
+	} 
 
 	/**
 	 * Chamado sempre que o player for destruído com um disparo. 
 	 */
 	public void die() { // Fiz a modificacao 27/04
+		long lastBreath = System.currentTimeMillis();
 		dead = true;
-	} // Preciso do metodo shot para testar
+	} 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 		Método que devolve a string de identificação do player.
