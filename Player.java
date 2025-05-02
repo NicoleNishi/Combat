@@ -14,7 +14,7 @@ public class Player implements ISolid {
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
 	private Shot currentShot;
 	private long lastBreath = 0;
-	private long died = 1000;
+	private long respawn = 500;
 	/*
 		Construtor da classe Player.
 
@@ -143,10 +143,8 @@ public class Player implements ISolid {
 	 * poderá ser danificado novamente.
 	 */
 	public boolean isDead() { // Fiz a modificacao 27/04
-		long now = System.currentTimeMillis();
-		if(now - lastBreath >= died) {
+		if(dead && System.currentTimeMillis() - lastBreath >= respawn) {
 			dead = false;
-			return false;
 		}
 		return dead;
 	} 
@@ -155,8 +153,8 @@ public class Player implements ISolid {
 	 * Chamado sempre que o player for destruído com um disparo. 
 	 */
 	public void die() { // Fiz a modificacao 27/04
-		long lastBreath = System.currentTimeMillis();
 		dead = true;
+		lastBreath = System.currentTimeMillis();
 	} 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
