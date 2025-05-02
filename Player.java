@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 	instancia dois objetos deste tipo quando a execução é iniciada.
 */
 public class Player implements ISolid {
-	private double direction;
+	private double direction; // grau
 	private double cx, cy, width, height, speed;
 	private Color color;
 	private String id;
@@ -122,7 +122,7 @@ public class Player implements ISolid {
 	 * desse player for acionada.
 	 */
 	public boolean canFire() { // Fiz a modificacao 27/04
-		// if(isDead()) return false; // Do not move when player is dead
+		if(isDead()) return false; // Do not fire when player is dead
 
 		long now = System.currentTimeMillis();
 
@@ -135,12 +135,14 @@ public class Player implements ISolid {
 	 * Esse método cria o disparo e o adiciona ao jogo.
 	 */
 	public void fire() {
-		// if(isDead()) return; // Do not move when player is dead
+		if(isDead()) return; // Do not fire when player is dead
 
 		if(canFire()) {
 			lastShotTime = System.currentTimeMillis();
 
-			new Shot(this, cx, cy, 1.0, direction, speed);
+			double directionRadians = Math.toRadians(direction);
+
+			new Shot(this, cx, cy, 1.0, directionRadians, speed);
 		}
 	} // Preciso do metodo shot para testar
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
