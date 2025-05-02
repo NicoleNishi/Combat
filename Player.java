@@ -122,12 +122,12 @@ public class Player implements ISolid {
 	public boolean canFire() { // Fiz a modificacao 27/04
 		if(isDead()) return false; // Do not fire when player is dead
 
-		Shot s;
+		Shot s; // aqui esta errado, preciso pensar em uma solucao, mas realmente usaremos essa variavel
 		if(s.getOwner() == this && s.isActive()) return false;
 
 		return true;
 		
-	} // Preciso do metodo shot para testar
+	} 
 
 	/**
 	 * Cria um disparo vindo desse player na mesma direção apontada pelo player.
@@ -141,7 +141,7 @@ public class Player implements ISolid {
 			Shot shot = new Shot(this, cx, cy, 1.0, directionRadians, speed);
 			Combat.addShot(shot);
 		}
-	} // Preciso do metodo shot para testar
+	} 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
