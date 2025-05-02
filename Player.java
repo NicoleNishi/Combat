@@ -12,7 +12,7 @@ public class Player implements ISolid {
 	private String id;
 	private BufferedImage img;
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
-	//private boolean fired = false;
+	private boolean fired = false;
 
 	/**
 		Construtor da classe Player.
@@ -123,10 +123,9 @@ public class Player implements ISolid {
 	public boolean canFire() { // Fiz a modificacao 27/04
 		if(isDead()) return false; // Do not fire when player is dead
 
-		// if(fired == true) return false;
+		if(fired == true) return false;
 
 		return true;
-		
 	} 
 
 	/**
@@ -138,8 +137,11 @@ public class Player implements ISolid {
 
 		Shot shot = new Shot(this, cx, cy, 1.0, direction, speed);
 		Combat.addShot(shot);
+		fired = true;
 
-		// fired = true;
+		if(shot.checkCollision(this) || shot.checkCollision(this)) {
+			fired = false;
+		}
 	} 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
