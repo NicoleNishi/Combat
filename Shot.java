@@ -43,6 +43,10 @@ public class Shot implements ISolid {
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
 	public void update(long delta){
+		double distance = speed * delta;
+
+		cx += vx * distance;
+		cy += vy * distance;
 	}
 
 	/**
@@ -51,12 +55,15 @@ public class Shot implements ISolid {
 		@param player o jogador que foi acertado.
 	*/
 	public void onPlayerCollision(Player player){
+		active = false;
+		player.die();
 	}
 
 	/**
 		Método chamado quando detecta-se uma colisão do disparo com alguma parede.
 	*/
 	public void onWallCollision(){
+		active = false;
 	}
 
 	/**
@@ -66,7 +73,7 @@ public class Shot implements ISolid {
 		@return um valor booleano que indica a ocorrência (true) ou não (false) de colisão.
 	*/
 	public boolean checkCollision(Wall wall){
-		return false;
+		return (wall.getCx() - wall.getWidth()/2 < cx && wall.getCx() + wall.getWidth()/2 > cx && wall.getCy() - wall.getHeight()/2 < cy && wall.getCy() + wall.getHeight()/2 > cy);
 	}
 
 	/**
@@ -76,7 +83,7 @@ public class Shot implements ISolid {
 		@return um valor booleano que indica a ocorrência (true) ou não (false) de colisão.
 	*/	
 	public boolean checkCollision(Player player){
-		return false;
+		return (player.getCx() - player.getWidth()/2 < cx && player.getCx() + player.getWidth()/2 > cx && player.getCy() - player.getHeight()/2 < cy && player.getCy() + player.getHeight()/2 > cy);
 	}
 
 	/**
@@ -84,7 +91,7 @@ public class Shot implements ISolid {
 	 * elementos do jogo.
 	 */
 	public boolean isActive() {
-		return false;
+		return active;
 	}
 
 	/**
@@ -92,7 +99,7 @@ public class Shot implements ISolid {
 		@return o valor double da coordenada x.
 	*/
 	public double getCx(){
-		return 0;
+		return cx;
 	}
 
 	/**
@@ -100,7 +107,7 @@ public class Shot implements ISolid {
 		@return o valor double da coordenada y.
 	*/
 	public double getCy(){
-		return 0;
+		return cy;
 	}
 
 	/**
@@ -109,17 +116,17 @@ public class Shot implements ISolid {
 
 	*/
 	public double getSpeed(){
-		return 0;
+		return speed;
 	}
 
 	/** Obtém a largura do retângulo que representa o disparo. */
 	public double getWidth() {
-		return 0;
+		return size;
 	}
 
 	/** Obtém a altura do retângulo que representa o disparo. */
 	public double getHeight() {
-		return 0;
+		return size;
 	}
 
 	/**
@@ -127,6 +134,6 @@ public class Shot implements ISolid {
 	 * @return o player que efetuou o disparo
 	 */
 	public Player getOwner() {
-		return null;
+		return owner;
 	}
 }
