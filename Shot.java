@@ -86,6 +86,9 @@ public class Shot implements ISolid {
 		if (player != owner) {
 			return (player.getCx() - player.getWidth()/2 < cx && player.getCx() + player.getWidth()/2 > cx && player.getCy() - player.getHeight()/2 < cy && player.getCy() + player.getHeight()/2 > cy);
 		}
+
+		player.update();
+
 		return false;
 	}
 
