@@ -15,7 +15,11 @@ public class Player implements ISolid {
 	private Shot currentShot;
 	private long lastBreath = 0;
 	private long respawn = 500;
-	/*
+	private double initialcx;
+	private double initialcy;
+	private boolean initialPositionStored = false;
+
+	/**
 		Construtor da classe Player.
 
 		@param cx coordenada x da posição inicial do player (centro do retângulo que o representa).
@@ -145,8 +149,7 @@ public class Player implements ISolid {
 	public boolean isDead() { // Fiz a modificacao 27/04
 		if(dead && System.currentTimeMillis() - lastBreath >= respawn) {
 			dead = false;
-			
-			setPosition(cx + 50, cy + 50);
+			resetToInitialPosition();
 		}
 		return dead;
 	} 
@@ -173,7 +176,18 @@ public class Player implements ISolid {
 	public void setPosition(double cx, double cy) { // Fiz a modificacao 27/04
 		this.cx = cx;
 		this.cy = cy;
+
+		if (!initialPositionStored) {
+			initialcx = cx;
+			initialcy = cy;
+			initialPositionStored = true;
+		}
 	} // Ok
+
+	public void resetToInitialPosition() {
+		this.cx = initialcx;
+		this.cy = initialcy;
+	}
 
 	/**
 		Método que devolve a largura do retângulo que representa o player.
