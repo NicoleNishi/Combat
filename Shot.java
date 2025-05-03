@@ -73,7 +73,23 @@ public class Shot implements ISolid {
 		@return um valor booleano que indica a ocorrência (true) ou não (false) de colisão.
 	*/
 	public boolean checkCollision(Wall wall){
-		return (wall.getCx() - wall.getWidth()/2 < cx && wall.getCx() + wall.getWidth()/2 > cx && wall.getCy() - wall.getHeight()/2 < cy && wall.getCy() + wall.getHeight()/2 > cy);
+		// Coordenadas da borda do shot
+    double shotLeft = cx - size / 2;
+    double shotRight = cx + size / 2;
+    double shotTop = cy - size / 2;
+    double shotBottom = cy + size / 2;
+
+    // Coordenadas da borda da parede
+    double wallLeft = wall.getCx() - wall.getWidth() / 2;
+    double wallRight = wall.getCx() + wall.getWidth() / 2;
+    double wallTop = wall.getCy() - wall.getHeight() / 2;
+    double wallBottom = wall.getCy() + wall.getHeight() / 2;
+
+    // Verifica se os retângulos se sobrepõem
+    boolean overlapX = shotRight > wallLeft && shotLeft < wallRight;
+    boolean overlapY = shotBottom > wallTop && shotTop < wallBottom;
+
+    return overlapX && overlapY;
 	}
 
 	/**
@@ -84,7 +100,23 @@ public class Shot implements ISolid {
 	*/	
 	public boolean checkCollision(Player player){
 		if (player != owner) {
-			return (player.getCx() - player.getWidth()/2 < cx && player.getCx() + player.getWidth()/2 > cx && player.getCy() - player.getHeight()/2 < cy && player.getCy() + player.getHeight()/2 > cy);
+			// Coordenadas da borda do shot
+			double shotLeft = cx - size / 2;
+			double shotRight = cx + size / 2;
+			double shotTop = cy - size / 2;
+			double shotBottom = cy + size / 2;
+
+			// Coordenadas da borda do player
+			double playerLeft = player.getCx() - player.getWidth() / 2;
+			double playerRight = player.getCx() + player.getWidth() / 2;
+			double playerTop = player.getCy() - player.getHeight() / 2;
+			double playerBottom = player.getCy() + player.getHeight() / 2;
+
+			// Verifica se os retângulos se sobrepõem
+			boolean overlapX = shotRight > playerLeft && shotLeft < playerRight;
+			boolean overlapY = shotBottom > playerTop && shotTop < playerBottom;
+
+			return overlapX && overlapY;
 		}
 		return false;
 	}
