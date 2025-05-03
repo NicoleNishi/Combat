@@ -11,9 +11,11 @@ public class Player implements ISolid {
 	private Color color;
 	private String id;
 	private BufferedImage img;
+
+	// Atributos adicionados
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
 	private Shot currentShot;
-	private long lastBreath = 0;
+	private long lastBreath; // Por definicao e inicializado com 0
 	private long respawn = 500;
 	private double initialcx;
 	private double initialcy;
@@ -58,7 +60,7 @@ public class Player implements ISolid {
 
 		GameLib.drawImage(img, cx, cy, direction, width / img.getWidth());
 	}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////Métodos de movimento/////////////////////////////////////////////////////////
 	/**
 		Método chamado quando se deseja mover para a frente na direção atual. 
 		Este método é chamado sempre que a tecla associada à ação 
@@ -120,7 +122,7 @@ public class Player implements ISolid {
 		double rotation = speed * delta;
 		direction += rotation; 
 	} // Ok
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////Métodos para shot///////////////////////////////////////////////////////////////////
 	/**
 	 * Retorna se o jogador pode realizar um disparo ou não. Chamado sempre que a ação de disparar
 	 * desse player for acionada.
@@ -141,7 +143,7 @@ public class Player implements ISolid {
 		currentShot = new Shot(this, cx, cy, 5.0, direction, 5 * speed);
 		Combat.addShot(currentShot);
 	} 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////Métodos para morte///////////////////////////////////////////////////////
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
 	 * poderá ser danificado novamente.
@@ -161,9 +163,9 @@ public class Player implements ISolid {
 		dead = true;
 		lastBreath = System.currentTimeMillis();
 	} 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////Métodos acessores////////////////////////////////////////////////////
 	/**
-		Método que devolve a string de identificação do player.
+		Método que devolve a string de identificação do player. (Getter)
 		@return a String de identificação.
 	*/
 	public String getId() {  // Fiz a modificacao 27/04
@@ -171,7 +173,7 @@ public class Player implements ISolid {
 	} // OK
 
 	/**
-	 * Teleporta o player para essa coordenada do mapa.
+	 * Teleporta o player para essa coordenada do mapa. (Setter)
 	 */
 	public void setPosition(double cx, double cy) { // Fiz a modificacao 27/04
 		this.cx = cx;
@@ -184,13 +186,16 @@ public class Player implements ISolid {
 		}
 	} // Ok
 
+	/**
+	 * Teleporta o player para a posição inicial do jogo. (Setter)
+	 */
 	public void resetToInitialPosition() {
 		this.cx = initialcx;
 		this.cy = initialcy;
 	}
 
 	/**
-		Método que devolve a largura do retângulo que representa o player.
+		Método que devolve a largura do retângulo que representa o player.(Getter)
 		@return um double com o valor da largura.
 	*/
 	public double getWidth() { // Fiz a modificacao 27/04
@@ -198,7 +203,7 @@ public class Player implements ISolid {
 	} // Ok
 
 	/**
-		Método que devolve a altura do retângulo que representa o player.
+		Método que devolve a altura do retângulo que representa o player. (Getter)
 		@return um double com o valor da altura.
 	*/
 	public double getHeight() { // Fiz a modificacao 27/04
@@ -206,7 +211,7 @@ public class Player implements ISolid {
 	} // Ok
 
 	/**
-		Método que devolve a coordenada x do centro do retângulo que representa o player.
+		Método que devolve a coordenada x do centro do retângulo que representa o player. (Getter)
 		@return o valor double da coordenada x.
 	*/
 	public double getCx() { // Fiz a modificacao 27/04
@@ -214,7 +219,7 @@ public class Player implements ISolid {
 	} // Ok
 
 	/**
-		Método que devolve a coordenada y do centro do retângulo que representa o player.
+		Método que devolve a coordenada y do centro do retângulo que representa o player. (Getter)
 		@return o valor double da coordenada y.
 	*/
 	public double getCy() { // Fiz a modificacao 27/04
@@ -222,7 +227,7 @@ public class Player implements ISolid {
 	} // Ok
 
 	/**
-	 * Obtém a cor do player.
+	 * Obtém a cor do player. (Getter)
 	 */
 	public Color getColor() { // Fiz a modificacao 27/04
 		return color;
