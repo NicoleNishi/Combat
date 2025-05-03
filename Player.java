@@ -134,7 +134,7 @@ public class Player implements ISolid {
 	public void fire() {
 		if(isDead()) return; // Do not fire when player is dead
 
-		currentShot = new Shot(this, cx, cy, 1.0, direction, speed);
+		currentShot = new Shot(this, cx, cy, 5.0, direction, 5 * speed);
 		Combat.addShot(currentShot);
 	} 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,6 +145,8 @@ public class Player implements ISolid {
 	public boolean isDead() { // Fiz a modificacao 27/04
 		if(dead && System.currentTimeMillis() - lastBreath >= respawn) {
 			dead = false;
+			
+			setPosition(cx + 50, cy + 50);
 		}
 		return dead;
 	} 
