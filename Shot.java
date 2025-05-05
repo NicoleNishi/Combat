@@ -53,7 +53,7 @@ public class Shot implements ISolid {
 		cx += vx * distance;
 		cy += vy * distance;
 
-		if (System.currentTimeMillis() - shotTime >10000) active = false;
+		if (System.currentTimeMillis() - shotTime > 3000) active = false;
 	}
 
 	/**
