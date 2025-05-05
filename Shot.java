@@ -7,6 +7,11 @@ public class Shot implements ISolid {
 	private double cx, cy, size, vx, vy, speed;
 	private boolean active;
 
+	// Atributos adicionados
+	private double overlapX = 0;
+	private double overlapY = 0;
+	private long shotTime = System.currentTimeMillis();
+
 	/**
 		Construtor da classe Shot.
 
@@ -47,6 +52,8 @@ public class Shot implements ISolid {
 
 		cx += vx * distance;
 		cy += vy * distance;
+
+		if (System.currentTimeMillis() - shotTime >10000) active = false;
 	}
 
 	/**
@@ -63,7 +70,12 @@ public class Shot implements ISolid {
 		Método chamado quando detecta-se uma colisão do disparo com alguma parede.
 	*/
 	public void onWallCollision(){
-		active = false;
+		if (overlapX < overlapY) {
+			vx = -vx;
+		}
+		else {
+			vy = -vy;
+		}
 	}
 
 	/**
@@ -74,22 +86,30 @@ public class Shot implements ISolid {
 	*/
 	public boolean checkCollision(Wall wall){
 		// Coordenadas da borda do shot
-    double shotLeft = cx - size / 2;
-    double shotRight = cx + size / 2;
-    double shotTop = cy - size / 2;
-    double shotBottom = cy + size / 2;
+		double shotLeft = cx - size / 2;
+		double shotRight = cx + size / 2;
+		double shotTop = cy - size / 2;
+		double shotBottom = cy + size / 2;
 
-    // Coordenadas da borda da parede
-    double wallLeft = wall.getCx() - wall.getWidth() / 2;
-    double wallRight = wall.getCx() + wall.getWidth() / 2;
-    double wallTop = wall.getCy() - wall.getHeight() / 2;
-    double wallBottom = wall.getCy() + wall.getHeight() / 2;
+		// Coordenadas da borda da parede
+		double wallLeft = wall.getCx() - wall.getWidth() / 2;
+		double wallRight = wall.getCx() + wall.getWidth() / 2;
+		double wallTop = wall.getCy() - wall.getHeight() / 2;
+		double wallBottom = wall.getCy() + wall.getHeight() / 2;
 
-    // Verifica se os retângulos se sobrepõem
-    boolean overlapX = shotRight > wallLeft && shotLeft < wallRight;
-    boolean overlapY = shotBottom > wallTop && shotTop < wallBottom;
+		// Diferença dos centros
+		double dx = Math.abs(cx - wall.getCx());
+		double dy = Math.abs(cy - wall.getCy());
 
-    return overlapX && overlapY;
+		// Quanto se sobrepõem (necessário pra saber em que sentido o objeto será refletido)
+		overlapX = ((size + wall.getWidth())/2) - dx;
+		overlapY = ((size + wall.getHeight())/2) - dy;
+
+		// Verifica se os retângulos se sobrepõem
+		boolean overX = shotRight > wallLeft && shotLeft < wallRight;
+		boolean overY = shotBottom > wallTop && shotTop < wallBottom;
+
+		return overX && overY;
 	}
 
 	/**
