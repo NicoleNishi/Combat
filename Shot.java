@@ -105,11 +105,7 @@ public class Shot implements ISolid {
 		overlapX = ((size + wall.getWidth())/2) - dx;
 		overlapY = ((size + wall.getHeight())/2) - dy;
 
-		// Verifica se os retângulos se sobrepõem
-		boolean overX = shotRight > wallLeft && shotLeft < wallRight;
-		boolean overY = shotBottom > wallTop && shotTop < wallBottom;
-
-		return overX && overY;
+		return Collision.checkCollision(this, wall);
 	}
 
 	/**
@@ -119,25 +115,7 @@ public class Shot implements ISolid {
 		@return um valor booleano que indica a ocorrência (true) ou não (false) de colisão.
 	*/	
 	public boolean checkCollision(Player player){
-		if (player != owner) {
-			// Coordenadas da borda do shot
-			double shotLeft = cx - size / 2;
-			double shotRight = cx + size / 2;
-			double shotTop = cy - size / 2;
-			double shotBottom = cy + size / 2;
-
-			// Coordenadas da borda do player
-			double playerLeft = player.getCx() - player.getWidth() / 2;
-			double playerRight = player.getCx() + player.getWidth() / 2;
-			double playerTop = player.getCy() - player.getHeight() / 2;
-			double playerBottom = player.getCy() + player.getHeight() / 2;
-
-			// Verifica se os retângulos se sobrepõem
-			boolean overlapX = shotRight > playerLeft && shotLeft < playerRight;
-			boolean overlapY = shotBottom > playerTop && shotTop < playerBottom;
-
-			return overlapX && overlapY;
-		}
+		if (player != owner) return Collision.checkCollision(this, player);
 		return false;
 	}
 
