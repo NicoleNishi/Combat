@@ -1,7 +1,16 @@
-MAIN = Combat
+# Diretório com os arquivos-fonte
+SRC_DIR = src
 
-all:
-	javac src/*.java
+# Nome da classe principal
+MAIN_CLASS = Combat
 
-run: all
-	java -cp src $(MAIN)
+# Todos os arquivos .java dentro de src/
+SOURCES = $(wildcard $(SRC_DIR)/*.java)
+
+# Compilar os arquivos .java
+build:
+	javac -d $(SRC_DIR) $(SOURCES)
+
+# Executar a classe principal
+run: build
+	java -cp $(SRC_DIR) $(MAIN_CLASS)

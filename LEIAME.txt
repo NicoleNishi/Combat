@@ -1,2 +1,9 @@
 Marcos Yutoh Mori - 15639956
 Nicole Nishi - 15675105
+
+
+Para compilar o programa:
+    $ make build
+
+Para executar o programa:
+    $ make run
