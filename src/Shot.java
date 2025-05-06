@@ -1,4 +1,3 @@
-<<<<<<< HEAD:src/Shot.java
 /**
  * Esta classe representa um dos disparos ativos usado no jogo. Essa classe sempre deve ser
  * instanciada quando um disparo for feito por algum dos jogadores.
@@ -173,7 +172,7 @@ public class Shot implements ISolid {
 		return owner;
 	}
 }
-=======
+
 /**
  * Esta classe representa um dos disparos ativos usado no jogo. Essa classe sempre deve ser
  * instanciada quando um disparo for feito por algum dos jogadores.
@@ -346,4 +345,3 @@ public class Shot implements ISolid {
 		return owner;
 	}
 }
->>>>>>> e2d5835bdad8b1553746756573fd4c2e17c9d8fb:Shot.java
