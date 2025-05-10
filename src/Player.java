@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
 	Esta classe representa os jogadores (players) do jogo. A classe principal do jogo
@@ -12,14 +13,11 @@ public class Player implements ISolid {
 	private String id;
 	private BufferedImage img;
 
-	// Atributos adicionados
+	// Adicionados
 	private boolean dead = false; // It was added to indicate that in the beginning the player is not dead
-	private Shot currentShot;
-	private long lastBreath; // Por definicao e inicializado com 0
-	private long respawn = 500;
-	private double initialcx;
-	private double initialcy;
-	private boolean initialPositionStored = false;
+	private Shot currentShot; 
+	private long lastBreath; // When the player was killed
+	private long respawn = 500; // Time between lastBreath and respawn
 
 	/**
 		Construtor da classe Player.
@@ -60,7 +58,7 @@ public class Player implements ISolid {
 
 		GameLib.drawImage(img, cx, cy, direction, width / img.getWidth());
 	}
-/////////////////////////////////////////////////////Métodos de movimento/////////////////////////////////////////////////////////
+
 	/**
 		Método chamado quando se deseja mover para a frente na direção atual. 
 		Este método é chamado sempre que a tecla associada à ação 
@@ -68,7 +66,7 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
-	public void moveForwards(long delta){ // Fiz a modificacao 27/04
+	public void moveForwards(long delta){ 
 		if(isDead()) return; // Do not move when player is dead
 
 		double distance = speed * delta;
@@ -76,7 +74,7 @@ public class Player implements ISolid {
 
 		cx += Math.cos(radians) * distance;
 		cy += Math.sin(radians) * distance;
-	} // ok
+	} 
 
 	/**
 		Método chamado quando se deseja mover o player para trás na direção atual. 
@@ -85,7 +83,7 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	*/
-	public void moveBackwards(long delta){ // Fiz a modificacao 27/04
+	public void moveBackwards(long delta){ 
 		if(isDead()) return; // Do not move when player is dead
 
 		double distance = speed * delta;
@@ -93,7 +91,7 @@ public class Player implements ISolid {
 
 		cx -= Math.cos(radians) * distance;
 		cy -= Math.sin(radians) * distance;
-	} // ok
+	} 
 
 	/**
 		Método chamado quando se deseja girar o player para a esquerda (sentido anti-horário). 
@@ -102,12 +100,12 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
-	public void rotateLeft(long delta) { // Fiz a modificacao 29/04
+	public void rotateLeft(long delta) { 
 		if(isDead()) return; // Do not move when player is dead
 
 		double rotation = speed * delta;
 		direction -= rotation;
-	} // OK
+	} 
 
 	/**
 		Método chamado quando se deseja girar o player para a direita (sentido horário). 
@@ -116,18 +114,18 @@ public class Player implements ISolid {
 
 		@param delta quantidade de milissegundos que se passou entre o ciclo anterior de atualização do jogo e o atual.
 	 */
-	public void rotateRight(long delta) { // Fiz a modificacao 29/04
+	public void rotateRight(long delta) { 
 		if(isDead()) return; // Do not move when player is dead
 
 		double rotation = speed * delta;
 		direction += rotation; 
-	} // Ok
-//////////////////////////////////////////////Métodos para shot///////////////////////////////////////////////////////////////////
+	} 
+
 	/**
 	 * Retorna se o jogador pode realizar um disparo ou não. Chamado sempre que a ação de disparar
 	 * desse player for acionada.
 	 */
-	public boolean canFire() { // Fiz a modificacao 27/04
+	public boolean canFire() { 
 		if(isDead()) return false;
 
 		return (currentShot == null || !currentShot.isActive());
@@ -143,94 +141,84 @@ public class Player implements ISolid {
 		currentShot = new Shot(this, cx, cy, 5.0, direction, 5 * speed);
 		Combat.addShot(currentShot);
 	} 
-/////////////////////////////////////////////////////////Métodos para morte///////////////////////////////////////////////////////
+
 	/**
 	 * Retorna se o player acabou de ser destruído. Enquanto o player estiver destruído, ele não
-	 * poderá ser danificado novamente.
+	 * poderá ser danificado novamente. Terá respawn em uma coordenada aleatória, após 500 milissegundos
+	 * 
+	 * A implementação é baseado no vídeo-exemplo passado no dia do anuncio do EP
+	 * Vídeo em questão: https://www.youtube.com/watch?v=2LxPEdUZOkE
 	 */
-	public boolean isDead() { // Fiz a modificacao 27/04
+	public boolean isDead() { 
 		if(dead && System.currentTimeMillis() - lastBreath >= respawn) {
 			dead = false;
-			resetToInitialPosition();
+			double[] vetor = Map.getRandomRespawn();
+			setPosition(vetor[0], vetor[1]);
 		}
 		return dead;
-	} 
+	}
 
 	/**
 	 * Chamado sempre que o player for destruído com um disparo. 
 	 */
-	public void die() { // Fiz a modificacao 27/04
+	public void die() { 
 		dead = true;
 		lastBreath = System.currentTimeMillis();
 	} 
-/////////////////////////////////////////////////////////////Métodos acessores////////////////////////////////////////////////////
+
 	/**
-		Método que devolve a string de identificação do player. (Getter)
+		Método que devolve a string de identificação do player. 
 		@return a String de identificação.
 	*/
-	public String getId() {  // Fiz a modificacao 27/04
+	public String getId() {  
 		return id; 
-	} // OK
+	}
 
 	/**
 	 * Teleporta o player para essa coordenada do mapa. (Setter)
 	 */
-	public void setPosition(double cx, double cy) { // Fiz a modificacao 27/04
+	public void setPosition(double cx, double cy) { 
 		this.cx = cx;
 		this.cy = cy;
-
-		if (!initialPositionStored) {
-			initialcx = cx;
-			initialcy = cy;
-			initialPositionStored = true;
-		}
-	} // Ok
+	} 
 
 	/**
-	 * Teleporta o player para a posição inicial do jogo. (Setter)
-	 */
-	public void resetToInitialPosition() {
-		this.cx = initialcx;
-		this.cy = initialcy;
+		Método que devolve a largura do retângulo que representa o player.
+		@return um double com o valor da largura.
+	*/
+	public double getWidth() { 
+		return width; 
+	} 
+
+	/**
+		Método que devolve a altura do retângulo que representa o player.
+		@return um double com o valor da altura.
+	*/
+	public double getHeight() { 
+		return height;
+	} 
+
+	/**
+		Método que devolve a coordenada x do centro do retângulo que representa o player.
+		@return o valor double da coordenada x.
+	*/
+	public double getCx() { 
+		return cx;
+	} 
+
+	/**
+		Método que devolve a coordenada y do centro do retângulo que representa o player. 
+		@return o valor double da coordenada y.
+	*/
+	public double getCy() { 
+		return cy;
 	}
 
 	/**
-		Método que devolve a largura do retângulo que representa o player.(Getter)
-		@return um double com o valor da largura.
-	*/
-	public double getWidth() { // Fiz a modificacao 27/04
-		return width; 
-	} // Ok
-
-	/**
-		Método que devolve a altura do retângulo que representa o player. (Getter)
-		@return um double com o valor da altura.
-	*/
-	public double getHeight() { // Fiz a modificacao 27/04
-		return height;
-	} // Ok
-
-	/**
-		Método que devolve a coordenada x do centro do retângulo que representa o player. (Getter)
-		@return o valor double da coordenada x.
-	*/
-	public double getCx() { // Fiz a modificacao 27/04
-		return cx;
-	} // Ok
-
-	/**
-		Método que devolve a coordenada y do centro do retângulo que representa o player. (Getter)
-		@return o valor double da coordenada y.
-	*/
-	public double getCy() { // Fiz a modificacao 27/04
-		return cy;
-	} // Ok
-
-	/**
-	 * Obtém a cor do player. (Getter)
+	 * Obtém a cor do player. 
 	 */
-	public Color getColor() { // Fiz a modificacao 27/04
+	public Color getColor() {
 		return color;
-	} // Ok
+	}
 }
 
