@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Map;
 
 /**
 	Esta classe representa os jogadores (players) do jogo. A classe principal do jogo
