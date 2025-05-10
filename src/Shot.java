@@ -68,6 +68,9 @@ public class Shot implements ISolid {
 
 	/**
 		Método chamado quando detecta-se uma colisão do disparo com alguma parede.
+
+		A implementação é baseado no vídeo-exemplo passado no dia do anuncio do EP
+	 	Vídeo em questão: https://www.youtube.com/watch?v=2LxPEdUZOkE
 	*/
 	public void onWallCollision(){
 		if (overlapX < overlapY) {
